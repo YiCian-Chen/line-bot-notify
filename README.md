@@ -4,8 +4,8 @@
 ## Tasks
 #### 爬蟲
 - (完成)1.[活動報名系統](https://enroll.tku.edu.tw/)
-- 2.[資工系網](http://www.csie.tku.edu.tw/)
-- 3.[AI系網](http://www.ai.tku.edu.tw/)
+- (完成)2.[資工系網](http://www.csie.tku.edu.tw/)
+- (完成)3.[AI系網](http://www.ai.tku.edu.tw/)
 
 #### Heroku & 資料庫
 - 資料庫存放之前以推播過的資料

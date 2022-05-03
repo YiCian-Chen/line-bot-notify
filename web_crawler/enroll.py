@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
-user_agent = UserAgent(use_cache_server=False)
+user_agent = UserAgent()
 header = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
     "Accept-Encoding": "gzip, deflate, br",
