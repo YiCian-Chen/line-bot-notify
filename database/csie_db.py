@@ -1,25 +1,5 @@
 import psycopg2
-import requests
-from bs4 import BeautifulSoup
-from fake_useragent import UserAgent
-user_agent = UserAgent()
-header = {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Accept-Language": "zh-TW,zh;q=0.9",
-    "Host": "www.csie.tku.edu.tw",  # 目標網站
-    "Sec-Fetch-Dest": "document",
-    "Sec-Fetch-Mode": "navigate",
-    "Sec-Fetch-Site": "none",
-    "Upgrade-Insecure-Requests": "1",
-    "User-Agent": user_agent.random,  # 使用者代理
-    "Referer": "https://www.google.com/"  # 參照位址
-}
-request = requests.get('http://www.csie.tku.edu.tw/Front/about/news/News.aspx?id=26J0iyD8bhA=', headers=header)
-html = BeautifulSoup(request.text, 'html.parser')
-tr = html.find_all('tr')
-tr.pop(0)
-
+from crawler import Crawler
 
 # Update connection string information
 host = "127.0.0.1"
@@ -32,30 +12,26 @@ sslmode = "allow"
 conn_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(host, user, dbname, password, sslmode)
 conn = psycopg2.connect(conn_string)
 print("Connection established")
+
 cursor = conn.cursor()
-# Drop previous table of same name if one exists
-# cursor.execute("SELECT * FROM enroll;")
-# rows = cursor.fetchall()
-# print(rows)
-
-
-for i in tr:
-    td = i.find_all('td')
-    category = td[0].text
-    date = td[1].text
-    title = td[2].a.text
-    url = td[2].a['href']
-    print(category)
-    print(date)
-    print(title)
-    print(url)
-    cursor.execute("INSERT INTO csie (category,date,title,url) VALUES (%s,%s,%s,%s);", (category,date,title,url))
-print("insert seccess")
-
 cursor.execute("SELECT * FROM csie;")
 rows = cursor.fetchall()
-print(rows)
 
+data = Crawler.csie()
+for i in data:
+    count = 0
+    for j in rows:
+        if i[2] == j[2]:
+            count += 1
+    if not count:
+        category = i[0]
+        date = i[1]
+        title = i[2]
+        url = i[3]
+        cursor.execute("INSERT INTO csie (category,date,title,url) VALUES (%s,%s,%s,%s);", (category,date,title,url))
+        print("insert new data")
+        # line notify 傳送訊息
+        
 conn.commit()
 cursor.close()
 conn.close()
