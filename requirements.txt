@@ -2,3 +2,5 @@ requests
 BeautifulSoup4
 fake_useragent
 psycopg2
+flask
+gunicorn
