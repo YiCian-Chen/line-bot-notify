@@ -1,5 +1,7 @@
-from flask import request, Flask
+from flask import request, Flask, render_template
 import os, urllib, json
+from database.notify_db import notify_db
+from database.excute import excute
 
 client_id = os.environ['NOTIFY_CLIENT_ID']
 client_secret = os.environ['NOTIFY_CLIENT_SECRET']
@@ -8,23 +10,22 @@ redirect_uri = f"https://tku-line-notify.herokuapp.com/callback/notify"
 app = Flask(__name__)
 @app.route("/callback/notify", methods=['GET'])
 def callback_nofity():
-    # assert request.headers['referer'] == 'https://notify-bot.line.me/'
-    try:
-        request.headers['referer'] == 'https://notify-bot.line.me/'
-    except:
-        print("----- try -- error ----------")
-    # print(request.headers)
+    assert request.headers['referer'] == 'https://notify-bot.line.me/'
     code = request.args.get('code')
     state = request.args.get('state')
-    # request_id = request.args.get('request_id')
     print("code = ",code)
     print("state = ",state)
-    # print("request_id = ",request_id)
-    # 接下來要繼續實作的函式
-    # access_token = get_token(code, client_id, client_secret, redirect_uri)
-
+    
+    access_token = get_token(code, client_id, client_secret, redirect_uri)
+    notify_db.insert_user(access_token,state)
     return '恭喜完成 LINE Notify 連動！請關閉此視窗。'
+    # return render_template("home.html")
 
+@app.route("/update", methods=['GET'])
+def update():
+    excute.all()
+    print("update now")
+    return 'update now'
 
 def get_token(code, client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri):
     url = 'https://notify-bot.line.me/oauth/token'
