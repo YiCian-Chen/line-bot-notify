@@ -1,4 +1,4 @@
-import psycopg2, urllib
+import psycopg2, urllib, os
 
 class notify_db:
 
@@ -9,6 +9,7 @@ class notify_db:
         password = "0000"
         sslmode = "allow"
         conn_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(host, user, dbname, password, sslmode)
+        conn_string = os.environ['DATABASE_URL']
         return psycopg2.connect(conn_string)
         
     def insert_user(access_token, user_name, subscribe = True):

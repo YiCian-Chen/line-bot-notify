@@ -3,19 +3,20 @@
 
 ## Tasks
 #### 爬蟲
-- (完成)1.[活動報名系統](https://enroll.tku.edu.tw/)
-- (完成)2.[資工系網](http://www.csie.tku.edu.tw/)
-- (完成)3.[AI系網](http://www.ai.tku.edu.tw/)
+- 1.[活動報名系統](https://enroll.tku.edu.tw/)
+- 2.[資工系網](http://www.csie.tku.edu.tw/)
+- 3.[AI系網](http://www.ai.tku.edu.tw/)
 
 #### Heroku & 資料庫
-- (完成)資料庫存放之前以推播過的資料
-- (完成)1.活動報名系統
-- (完成)2.資工系網
-- (完成)3.AI系網
+- 資料庫存放之前以推播過的資料
+- 1.活動報名系統
+- 2.資工系網
+- 3.AI系網
 - 將本地端資料庫改成 Heroku 的資料庫
 
 #### line notify
 - 1.呼叫function，能推播訊息出去
+- 2.能新增訂閱者到資料庫
 
 
 ## git使用介紹
@@ -38,6 +39,9 @@ pip install -r requirements.txt
 
 
 ## 參考資料
+
+https://ithelp.ithome.com.tw/articles/10254814
+
 https://ithelp.ithome.com.tw/users/20140165/ironman/4423?page=1
 
 https://ithelp.ithome.com.tw/users/20121176/ironman/3023
