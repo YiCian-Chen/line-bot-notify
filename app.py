@@ -3,15 +3,23 @@ import os, urllib, json
 
 client_id = os.environ['NOTIFY_CLIENT_ID']
 client_secret = os.environ['NOTIFY_CLIENT_SECRET']
-redirect_uri = f"https://tku-line-notify.herokuapp.com/callback/notify?state=TKU"
+redirect_uri = f"https://tku-line-notify.herokuapp.com/callback/notify"
 
 app = Flask(__name__)
 @app.route("/callback/notify", methods=['GET'])
 def callback_nofity():
-    assert request.headers['referer'] == 'https://notify-bot.line.me/'
+    # assert request.headers['referer'] == 'https://notify-bot.line.me/'
+    try:
+        request.headers['referer'] == 'https://notify-bot.line.me/'
+    except:
+        print("----- try -- error ----------")
+    # print(request.headers)
     code = request.args.get('code')
     state = request.args.get('state')
-
+    # request_id = request.args.get('request_id')
+    print("code = ",code)
+    print("state = ",state)
+    # print("request_id = ",request_id)
     # 接下來要繼續實作的函式
     # access_token = get_token(code, client_id, client_secret, redirect_uri)
 
