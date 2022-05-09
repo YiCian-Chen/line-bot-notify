@@ -1,5 +1,5 @@
 from flask import request, Flask, render_template
-import os, urllib, json
+import os, requests
 from database.notify_db import notify_db
 from database.excute import excute
 
@@ -17,19 +17,25 @@ def callback_nofity():
         return "wrong"
     print("code = ",code)
     print("state = ",state)
-    
-    access_token = get_token(code, client_id, client_secret, redirect_uri)
-    notify_db.insert_user(access_token,state)
-    return '恭喜完成 LINE Notify 連動！請關閉此視窗。'
-    # return render_template("home.html")
+    return render_template("code.html", code=code)
 
 @app.route("/update", methods=['GET'])
 def update():
     excute.all()
     print("update now")
-    return 'update now'
+    return render_template("update.html")
 
-def get_token1(code, client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri):
+@app.route("/authorize", methods=['POST'])
+def authorize():
+    code = request.form.get('code')
+    name = request.form.get('name')
+    print("Auth code = ",code)
+    print("Auth name = ",name)
+    access_token = get_token(code, client_id, client_secret, redirect_uri)
+    notify_db.insert_user(access_token,name)
+    return render_template("access.html")
+
+def get_token(code, client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri):
     url = 'https://notify-bot.line.me/oauth/token'
     headers = { 'Content-Type': 'application/x-www-form-urlencoded'}
     data = {
@@ -39,28 +45,9 @@ def get_token1(code, client_id=client_id, client_secret=client_secret, redirect_
         'client_id': client_id,
         'client_secret': client_secret
     }
-    import requests
     r = requests.post(url, data = data, headers=headers)
     print(r.json())
     return r.json()['access_token']
     
-def get_token(code, client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri):
-    url = 'https://notify-bot.line.me/oauth/token'
-    headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
-    data = {
-        'grant_type': 'authorization_code',
-        'code': code,
-        'redirect_uri': redirect_uri,
-        'client_id': client_id,
-        'client_secret': client_secret
-    }
-    data = urllib.parse.urlencode(data).encode()
-    req = urllib.request.Request(url, data=data, headers=headers)
-    page = urllib.request.urlopen(req).read()
-    
-    res = json.loads(page.decode('utf-8'))
-    return res['access_token']
-
-
 if __name__ == "__main__":
     app.run()

@@ -1,5 +1,6 @@
 from database.crawler import Crawler
 from database.notify_db import notify_db
+import datetime
 
 class excute:
     def all():
@@ -22,11 +23,12 @@ class excute:
                 Event_name = i[0]
                 organizer = i[1]
                 url = i[2]
-                cursor.execute("INSERT INTO enroll (event_name, organizer,url) VALUES (%s,%s,%s);", (Event_name,organizer,url))
-                print("insert new data")
+                date = str(datetime.date.today())
+                cursor.execute("INSERT INTO enroll (event_name, organizer,url, date) VALUES (%s,%s,%s,%s);", (Event_name,organizer,url,date))
+                print("insert new data from enroll")
                 
                 # line notify 傳送訊息
-                msg = '\n' + Event_name + '\n' + organizer + '\n' + url
+                msg = date + '\n' + Event_name + '\n\n' + organizer + '\n' + url
                 notify_db.send_message(msg)
                 
         conn.commit()
@@ -50,10 +52,10 @@ class excute:
                 title = i[2]
                 url = i[3]
                 cursor.execute("INSERT INTO csie (category,date,title,url) VALUES (%s,%s,%s,%s);", (category,date,title,url))
-                print("insert new data")
+                print("insert new data from csie")
 
                 # line notify 傳送訊息
-                msg = '\n' + title + '\n\n' + category + '\n' + url + '\n' + date
+                msg = '\n' + date + '\n' + title + '\n\n' + category + '\n' + url 
                 notify_db.send_message(msg)
                 
         conn.commit()
@@ -65,7 +67,7 @@ class excute:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM ai;")
         rows = cursor.fetchall()
-        data = Crawler.csie()
+        data = Crawler.ai()
         for i in data:
             count = 0
             for j in rows:
@@ -77,10 +79,10 @@ class excute:
                 title = i[2]
                 url = i[3]
                 cursor.execute("INSERT INTO ai (category,date,title,url) VALUES (%s,%s,%s,%s);", (category,date,title,url))
-                print("insert new data")
+                print("insert new data from ai")
 
                 # line notify 傳送訊息
-                msg = '\n' + title + '\n\n' + category + '\n' + url + '\n' + date
+                msg = '\n' + date + '\n' + title + '\n\n' + category + '\n' + url 
                 notify_db.send_message(msg)
                 
         conn.commit()

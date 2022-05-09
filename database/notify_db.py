@@ -1,4 +1,4 @@
-import psycopg2, urllib, os
+import psycopg2, urllib, os, datetime
 
 class notify_db:
 
@@ -15,7 +15,9 @@ class notify_db:
     def insert_user(access_token, user_name, subscribe = True):
         conn = notify_db.set_db()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO notify (access_token,user_name,subscribe) VALUES (%s,%s,%s);", (access_token,user_name,subscribe))
+        date = date = str(datetime.date.today())
+        cursor.execute("INSERT INTO notify (access_token,user_name,subscribe,date) VALUES (%s,%s,%s,%s);", (access_token,user_name,subscribe,date))
+        print("insert new user ", user_name , access_token)
         conn.commit()
         cursor.close()
         conn.close()

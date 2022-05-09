@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Line Notify 連結成功</title>
+    <style>
+        body{
+            background-color: antiquewhite;
+            text-align: center;
+        }
+        h1,h2{
+            font-size: 100px;
+        }
+        button{
+            background-color: burlywood;
+            cursor: pointer;
+            border-radius: 25px;
+            box-shadow: 2px 9px 4px #999;
+            border: none;
+            font-size: 90px;
+        }
+        button:active{
+            box-shadow: 0 4px #999;
+            transform: translateY(5px);
+        }
+        input{
+            margin-bottom: 40px;
+            padding: 5px;
+            background-color: cornsilk;
+            border: 2px solid black;
+            border-radius: 10px;
+            font-size: 70px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Line Notify</h1>
+    <h1>已完成連動 !!</h1>
+    <h2>請按下按鈕來完成後續授權和資料庫連結</h2>
+    <form action="https://tku-line-notify.herokuapp.com/authorize" method="post">
+        <input type="hidden" name="code" value={{ code }}>
+        <input type="text" name="name" id="" placeholder="請輸入姓名" required>
+        <button type="submit">Click Me</button>
+    </form>
+</body>
+</html>
