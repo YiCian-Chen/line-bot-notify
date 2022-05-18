@@ -1,0 +1,2 @@
+ALTER SEQUENCE enroll_serial_seq RESTART WITH 1;
+select nextval('enroll_serial_seq')
