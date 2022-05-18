@@ -1,4 +1,4 @@
-import psycopg2, urllib, os, datetime
+import psycopg2, requests, os, datetime
 
 class notify_db:
 
@@ -35,8 +35,6 @@ class notify_db:
         for i in rows:
             try:
                 headers = {"Authorization": "Bearer "+ i[0]}
-                data = urllib.parse.urlencode(data).encode()
-                req = urllib.request.Request(url, data=data, headers=headers)
-                page = urllib.request.urlopen(req).read()
+                r = requests.post(url, data = data, headers=headers)
             except:
                 pass
