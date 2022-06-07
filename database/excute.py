@@ -23,13 +23,15 @@ class excute:
                 Event_name = i[0]
                 organizer = i[1]
                 url = i[2]
-                date = str(datetime.date.today())
-                cursor.execute("INSERT INTO enroll (event_name, organizer,url, date) VALUES (%s,%s,%s,%s);", (Event_name,organizer,url,date))
-                print("insert new data from enroll")
-                
-                # line notify 傳送訊息
-                msg = date + '\n' + Event_name + '\n\n' + organizer + '\n' + url
-                notify_db.send_message(msg)
+                person = i[3]
+                if person.find('學生') != (-1): #-1為查詢不到的返回值
+                    date = str(datetime.date.today())
+                    cursor.execute("INSERT INTO enroll (event_name, organizer,url, date) VALUES (%s,%s,%s,%s);", (Event_name,organizer,url,date))
+                    print("insert new data from enroll")
+                    
+                    # line notify 傳送訊息
+                    msg = date + '\n' + Event_name + '\n\n' + organizer + '\n' + url
+                    notify_db.send_message(msg)
                 
         conn.commit()
         cursor.close()
