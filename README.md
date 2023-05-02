@@ -1,6 +1,10 @@
 # line-bot-notify
 爬蟲 + Heroku + line notify
 
+- 因 Heroku 採取收費方式，應用轉為 Render 服務使用
+- 目前服務上線網址:https://tku-notify.onrender.com/
+- 第一次連線較久，因伺服器啟動需要時間，需等待片刻
+
 ## Tasks
 #### 爬蟲
 - 1.[活動報名系統](https://enroll.tku.edu.tw/)
